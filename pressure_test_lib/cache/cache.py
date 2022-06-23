@@ -9,7 +9,7 @@ class LocalCache:
     def __init__(self):
         self._cache = {}
 
-    async def set(self, key, value, expire=0):
+    def set(self, key, value, expire=0):
         """设置缓存
         expire： -1为不会过期，>=0是过期时间，单位秒
         """
@@ -20,7 +20,7 @@ class LocalCache:
             }
         })
 
-    async def get(self, key):
+    def get(self, key):
         result = self._cache.get(key)
         if result:
             return result

@@ -1,7 +1,7 @@
 import json
 import pytest
 from pressure_test_lib.base.constants import PressureTestConfig
-from pressure_test_lib.base.tools import url_to_domain_path, get_mock_data
+from pressure_test_lib.base.tools import get_mock_data
 from pressure_test_lib.cache.cache import local_cache
 from pressure_test_lib.fastapi_test.mock_data import init_cache_mock_data
 
@@ -61,9 +61,9 @@ async def client_session_request_wrapper(*args, **kwargs):
     """Wraps aiohttp.ClientSession._request"""
     if PressureTestConfig.switch:
         # 压测配置是否开启，用来判断是否为压测命名空间
-        mock_data_cache = await local_cache.get(PressureTestConfig.mock_cache_key)
+        mock_data_cache = local_cache.get(PressureTestConfig.mock_cache_key)
         if mock_data_cache:
-            # 从内存获取mock数据，内存中没有直接发起真实请求，内存里存的mock数据结构 {'data':{'domain_name':[{'weight':1,'mock_data':{}}]}}
+            # 从内存获取mock数据，内存中没有直接发起真实请求，内存里存的mock数据结构 {'data':{'domain_name_uri':mock_data}}
             if local_cache.is_expired(mock_data_cache):
                 # 如果内存数据过期，则再从redis取数据存进内存
                 mock_data_cache = await init_cache_mock_data()

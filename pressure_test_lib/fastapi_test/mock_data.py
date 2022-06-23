@@ -41,5 +41,5 @@ async def init_cache_mock_data():
         # 如果不是压测命名空间，就不初始化mock数据
         return None
     redis_mock_data_config = await get_redis_mock_data_config()
-    await local_cache.set(PressureTestConfig.mock_cache_key, redis_mock_data_config, PressureTestConfig.mock_cache_ex)
-    return await local_cache.get(PressureTestConfig.mock_cache_key)
+    local_cache.set(PressureTestConfig.mock_cache_key, redis_mock_data_config, PressureTestConfig.mock_cache_ex)
+    return local_cache.get(PressureTestConfig.mock_cache_key)
